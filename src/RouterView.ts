@@ -66,8 +66,8 @@ export const RouterViewImpl = /*#__PURE__*/ defineComponent({
       () => props.route || injectedRoute.value
     )
     const injectedDepth = inject(viewDepthKey, 0)
-    // The depth changes based on empty components option, which allows passthrough routes e.g. routes with children
-    // that are used to reuse the `path` property
+
+    // 获取匹配的路由记录深度
     const depth = computed<number>(() => {
       let initialDepth = unref(injectedDepth)
       const { matched } = routeToDisplay.value

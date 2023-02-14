@@ -130,8 +130,7 @@ export function guardToPromiseFn(
   record?: RouteRecordNormalized,
   name?: string  // name为注册路由时的名称
 ): () => Promise<void> {
-  // keep a reference to the enterCallbackArray to prevent pushing callbacks if a new navigation took place
-  // 为该条记录的每个路由组件，按照名称创建一个集合管理
+  // 保存 beforeRouteEnter 中的next回调，等到组件挂载后调用
   const enterCallbackArray =
     record &&
     // name is defined if record is because of the function overload
@@ -139,6 +138,8 @@ export function guardToPromiseFn(
 
   return () =>
     new Promise((resolve, reject) => {
+
+
       const next: NavigationGuardNext = (
         // 参数为路由守卫的返回值
         valid?: boolean | RouteLocationRaw | NavigationGuardNextCallback | Error
@@ -304,7 +305,7 @@ export function extractComponentsGuards(
       if (guardType !== 'beforeRouteEnter' && !record.instances[name]) continue
 
       if (isRouteComponent(rawComponent)) {
-        // 兼容 vue-class-component 格式编写的的类组件
+        // 兼容 vue-class-component 格式编写的的类组件和一般组件
         const options: ComponentOptions =
           (rawComponent as any).__vccOpts || rawComponent
         // 获取到路由组件中的守卫

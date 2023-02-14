@@ -540,6 +540,7 @@ export function createRouter(options: RouterOptions): Router {
       }
     }
 
+
     return assign(
       {
         fullPath,
@@ -987,7 +988,7 @@ export function createRouter(options: RouterOptions): Router {
     // currentRoute 始终指向当前页面录音信息
     currentRoute.value = toLocation
     handleScroll(toLocation, from, isPush, isFirstNavigation)
-
+    // 可以进行popstate监听
     markAsReady()
   }
 

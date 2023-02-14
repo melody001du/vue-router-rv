@@ -344,7 +344,7 @@ export function createRouterMatcher(
     const matched: MatcherLocation['matched'] = []
     let parentMatcher: RouteRecordMatcher | undefined = matcher
     while (parentMatcher) {
-      // 父路由在数组开头
+      // 父路由在数组开头,当前路由记录在末尾
       matched.unshift(parentMatcher.record)
       parentMatcher = parentMatcher.parent
     }
@@ -392,11 +392,11 @@ export function normalizeRouteRecord(
     redirect: record.redirect,
     name: record.name,
     meta: record.meta || {},
-    aliasOf: undefined,
+    aliasOf: undefined, // 别名记录才会有值，执行原始记录
     beforeEnter: record.beforeEnter,
     props: normalizeRecordProps(record),
     children: record.children || [],
-    instances: {},
+    instances: {},//路由组件实例，复用时使用
     leaveGuards: new Set(), // setup中使用的守卫
     updateGuards: new Set(),// setup中使用的守卫
     enterCallbacks: {},
@@ -453,6 +453,8 @@ function mergeMetaFields(matched: MatcherLocation['matched']) {
     (meta, record) => assign(meta, record.meta),
     {} as MatcherLocation['meta']
   )
+
+
 }
 // 合并defaults中的key
 function mergeOptions<T extends object>(
